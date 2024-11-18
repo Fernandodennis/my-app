@@ -4,6 +4,7 @@ import Survey from './Survey';
 import MealPlan from './MealPlan';
 import BiodegradableChecklist from './BiodegradableChecklist';
 import Dashboard from './Dashboard';
+import SortingGame from './game';
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
             <li><Link to="/meal-plan">Meal Plan</Link></li>
             <li><Link to="/biodegradable-checklist">Biodegradable Checklist</Link></li>
             <li><Link to="/dashboard">Dashboard</Link></li>
+            <li><Link to="/game">Minigame</Link></li>
           </ul>
         </nav>
 
@@ -24,6 +26,7 @@ const Home = () => {
           <Route path="/meal-plan" element={<MealPlan />} />
           <Route path="/biodegradable-checklist" element={<BiodegradableChecklist />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/game" element={<SortingGame />} />
         </Routes>
       </div>
     </Router>

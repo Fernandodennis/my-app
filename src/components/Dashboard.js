@@ -1,48 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const Dashboard = () => {
-  const [wasteType, setWasteType] = useState('food');
-  const [reductionGoal, setReductionGoal] = useState('reduceWaste');
+const onboardingQuestions = [
+  {
+    section: "Personal Information",
+    questions: [
+      { text: "What is your name?", type: "text" },
+      { text: "What is your age?", type: "number" }
+    ]
+  },
+  {
+    section: "Preferences",
+    questions: [
+      {
+        text: "What is your favorite color?",
+        options: ["Red", "Green", "Blue", "Yellow"]
+      },
+      {
+        text: "Do you prefer cats or dogs?",
+        options: ["Cats", "Dogs"]
+      }
+    ]
+  },
+  {
+    section: "Hobbies and Interests",
+    questions: [
+      { text: "What are your hobbies?", type: "text" },
+      {
+        text: "Which activities do you enjoy?",
+        options: ["Reading", "Gaming", "Sports", "Music", "Travel"]
+      }
+    ]
+  }
+];
+
+const Questionnaire = () => {
+  const [answers, setAnswers] = useState({});
+
+  const handleChange = (questionText, value) => {
+    setAnswers(prevAnswers => ({
+      ...prevAnswers,
+      [questionText]: value
+    }));
+  };
 
   const handleSubmit = () => {
-    console.log('Dashboard Submitted', { wasteType, reductionGoal });
-    alert('Waste tracking preferences saved!');
+    console.log("Submitted Answers:", answers);
+    alert("Answers submitted!");
   };
 
   return (
     <div>
-      <h1>Personalized Dashboard</h1>
-
-      <div>
-        <label htmlFor="wasteType">Select Waste to Track:</label>
-        <select
-          id="wasteType"
-          value={wasteType}
-          onChange={(e) => setWasteType(e.target.value)}
-        >
-          <option value="food">Food</option>
-          <option value="plastic">Plastic</option>
-          <option value="paper">Paper</option>
-          <option value="glass">Glass</option>
-        </select>
-      </div>
-
-      <div>
-        <label htmlFor="reductionGoal">Select Goal:</label>
-        <select
-          id="reductionGoal"
-          value={reductionGoal}
-          onChange={(e) => setReductionGoal(e.target.value)}
-        >
-          <option value="reduceWaste">Reduce waste by X%</option>
-          <option value="recycleMore">Recycle more</option>
-          <option value="compostFood">Compost food waste</option>
-        </select>
-      </div>
-
+      <h2>Personalized Dashboard Setup</h2>
+      {onboardingQuestions.map(section => (
+        <div key={section.section}>
+          <h3>{section.section}</h3>
+          {section.questions.map(question => (
+            <div key={question.text}>
+              <label>{question.text}</label>
+              {question.options ? (
+                question.options.map(option => (
+                  <div key={option}>
+                    <input
+                      type="radio"
+                      name={question.text}
+                      value={option}
+                      onChange={e => handleChange(question.text, e.target.value)}
+                    />
+                    <label>{option}</label>
+                  </div>
+                ))
+              ) : (
+                <input
+                  type={question.type || "text"}
+                  onChange={e => handleChange(question.text, e.target.value)}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      ))}
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 };
 
-export default Dashboard;
+export default Questionnaire;

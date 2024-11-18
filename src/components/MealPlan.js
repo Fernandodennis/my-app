@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
 
 const mealPlans = {
   glutenFree: {
@@ -9,75 +8,110 @@ const mealPlans = {
         breakfast: "Smoothie with spinach, banana, almond milk, and chia seeds",
         lunch: "Quinoa salad with cherry tomatoes, cucumber, and lemon vinaigrette",
         snack: "Sliced apple with almond butter",
-        dinner: "Grilled chicken with steamed broccoli and sweet potato"
+        dinner: "Grilled chicken with steamed broccoli and sweet potato",
       },
       tuesday: {
-        breakfast: "Oatmeal with almond milk, berries, and honey",
-        lunch: "Chickpea salad with avocado and cucumber",
+        breakfast: "Overnight oats with almond milk and berries",
+        lunch: "Lentil soup with carrots, celery, and herbs",
         snack: "Carrot sticks with hummus",
-        dinner: "Baked salmon with quinoa and asparagus"
+        dinner: "Baked salmon with asparagus and brown rice",
       },
-      // Add other days
-    }
+    },
   },
-  // Add more meal plans
+  general: {
+    description: "A balanced meal plan for general health with biodegradable foods.",
+    days: {
+      monday: {
+        breakfast: "Overnight oats with almond milk, bananas, and chia seeds",
+        lunch: "Quinoa salad with mixed greens, cherry tomatoes, and lemon-olive oil dressing",
+        snack: "Carrot sticks with hummus",
+        dinner: "Grilled chicken with roasted sweet potatoes and steamed broccoli",
+        dessert: "Baked apple with cinnamon",
+      },
+      tuesday: {
+        breakfast: "Smoothie with spinach, banana, and almond milk",
+        lunch: "Lentil soup with carrots and celery",
+        snack: "Sliced cucumber with tzatziki",
+        dinner: "Baked salmon with asparagus and quinoa",
+        dessert: "Dark chocolate square",
+      },
+    },
+  },
+  diabetesFriendly: {
+    description: "A meal plan featuring biodegradable foods for diabetes management.",
+    days: {
+      monday: {
+        breakfast: "Overnight oats with chia seeds, almond milk, and berries",
+        lunch: "Salad with cherry tomatoes, cucumber, spinach, and lemon-olive oil dressing",
+        snack: "Carrot sticks with hummus",
+        dinner: "Grilled chicken with steamed broccoli and sweet potatoes",
+        dessert: "Chia seed pudding with sliced strawberries",
+      },
+      tuesday: {
+        breakfast: "Greek yogurt with walnuts and cinnamon",
+        lunch: "Lentil soup with mixed greens",
+        snack: "Celery sticks with peanut butter",
+        dinner: "Baked salmon with asparagus and quinoa",
+        dessert: "Sliced kiwi",
+      },
+    },
+  },
 };
 
-const MealPlan = () => {
-  const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState('glutenFree');
-  const [selectedDay, setSelectedDay] = useState('monday');
+function MealPlans() {
+  const [selectedPlan, setSelectedPlan] = useState("glutenFree");
+  const [selectedDay, setSelectedDay] = useState("monday");
 
-  const displayMealPlan = (planType, day) => {
-    const plan = mealPlans[planType];
-    if (plan && plan.days[day]) {
-      return plan.days[day];
-    }
-    return {};
-  };
-
-  const meal = displayMealPlan(selectedPlan, selectedDay);
+  const plan = mealPlans[selectedPlan];
+  const dayMeals = plan?.days[selectedDay] || {};
 
   return (
-    <div>
-      <h1>Meal Plan Selection</h1>
-      <div>
-        <label htmlFor="mealPlan">Select Meal Plan:</label>
+    <div style={{ maxWidth: "600px", margin: "auto", padding: "20px" }}>
+      <h1>Meal Plans</h1>
+      <p><strong>Description:</strong> {plan.description}</p>
+
+      <div style={{ marginBottom: "20px" }}>
+        <label htmlFor="planType">Choose a Meal Plan:</label>
         <select
-          id="mealPlan"
+          id="planType"
           value={selectedPlan}
           onChange={(e) => setSelectedPlan(e.target.value)}
+          style={{ width: "100%", padding: "8px", margin: "10px 0" }}
         >
-          <option value="glutenFree">Gluten-Free</option>
-          <option value="general">General</option>
-          {/* Add more plans */}
+          {Object.keys(mealPlans).map((planKey) => (
+            <option key={planKey} value={planKey}>
+              {planKey}
+            </option>
+          ))}
         </select>
       </div>
 
-      <div>
-        <label htmlFor="mealDay">Select Day:</label>
+      <div style={{ marginBottom: "20px" }}>
+        <label htmlFor="day">Choose a Day:</label>
         <select
-          id="mealDay"
+          id="day"
           value={selectedDay}
           onChange={(e) => setSelectedDay(e.target.value)}
+          style={{ width: "100%", padding: "8px", margin: "10px 0" }}
         >
-          <option value="monday">Monday</option>
-          <option value="tuesday">Tuesday</option>
-          {/* Add more days */}
+          {Object.keys(plan.days).map((day) => (
+            <option key={day} value={day}>
+              {day.charAt(0).toUpperCase() + day.slice(1)}
+            </option>
+          ))}
         </select>
       </div>
 
       <div>
-        <h2>{selectedPlan} Meal Plan for {selectedDay.charAt(0).toUpperCase() + selectedDay.slice(1)}</h2>
-        <p>Breakfast: {meal.breakfast}</p>
-        <p>Lunch: {meal.lunch}</p>
-        <p>Snack: {meal.snack}</p>
-        <p>Dinner: {meal.dinner}</p>
+        <h2>Meals for {selectedDay.charAt(0).toUpperCase() + selectedDay.slice(1)}</h2>
+        <p><strong>Breakfast:</strong> {dayMeals.breakfast || "Not available"}</p>
+        <p><strong>Lunch:</strong> {dayMeals.lunch || "Not available"}</p>
+        <p><strong>Snack:</strong> {dayMeals.snack || "Not available"}</p>
+        <p><strong>Dinner:</strong> {dayMeals.dinner || "Not available"}</p>
+        {dayMeals.dessert && <p><strong>Dessert:</strong> {dayMeals.dessert}</p>}
       </div>
-
-      <button onClick={() => navigate(-1)}>Go Back</button>
     </div>
   );
-};
+}
 
-export default MealPlan;
+export default MealPlans;

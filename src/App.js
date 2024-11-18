@@ -1,16 +1,11 @@
 import React from 'react';
-import Survey from './components/Survey';
-import MealPlan from './components/MealPlan';
-import BiodegradableChecklist from './components/BiodegradableChecklist';
-import Dashboard from './components/Dashboard';
+import Home from './components/Home';
+import MealPlans from "./components/MealPlan";
 
 function App() {
   return (
     <div>
-      <Survey />
-      <MealPlan />
-      <BiodegradableChecklist />
-      <Dashboard />
+      <Home />
     </div>
   );
 }
